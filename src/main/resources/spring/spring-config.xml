@@ -2,10 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
     http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <!--扫描指定包名-->
     <!--扫描注解后，不需要在配置文件中进行注册-->
@@ -13,43 +16,48 @@
     <!--先不开启注解扫描-->
     <!--<context:annotation-config/>-->
     <!--配置一个代理-->
-    <bean id = "greetingProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
-        <!--需要代理的接口-->
-        <property name="interfaces">
-            <list>
-                <value>com.warframe.springaop.bean.Greeting</value>
-                <value>com.warframe.springaop.bean.Apology</value>
-            </list>
-        </property>
-        <!--接口实现类-->
-        <property name="target" ref = "greetingImpl"/>
-        <property name="interceptorNames">
-            <list>
-                <value>greetingIntroAdvice</value>
-                <value>greetingBeforeAdvice</value>
-                <value>greetingAfterAdvice</value>
-                <value>greetingThrowAdvice</value>
-            </list>
-        </property>
-        <!--代理目标类(默认为false，代理接口)-->
-        <property name="proxyTargetClass" value="true"/>
+    <!--<bean id = "greetingProxy" class="org.springframework.aop.framework.ProxyFactoryBean">-->
+        <!--&lt;!&ndash;需要代理的接口&ndash;&gt;-->
+        <!--<property name="interfaces">-->
+            <!--<list>-->
+                <!--<value>com.warframe.springaop.bean.Greeting</value>-->
+                <!--<value>com.warframe.springaop.bean.Apology</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--&lt;!&ndash;接口实现类&ndash;&gt;-->
+        <!--<property name="target" ref = "greetingImpl"/>-->
+        <!--<property name="interceptorNames">-->
+            <!--<list>-->
+                <!--<value>greetingIntroAdvice</value>-->
+                <!--<value>greetingBeforeAdvice</value>-->
+                <!--<value>greetingAfterAdvice</value>-->
+                <!--<value>greetingThrowAdvice</value>-->
+            <!--</list>-->
+        <!--</property>-->
+        <!--&lt;!&ndash;代理目标类(默认为false，代理接口)&ndash;&gt;-->
+        <!--<property name="proxyTargetClass" value="true"/>-->
 
-    </bean>
+    <!--</bean>-->
 
 
 
-    <!--配置一个切面-->
-    <bean id="greetingAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
-        <!--advice-->
-        <property name="advice" ref="greetingAroundAdvice"/>
-        <!--pointcut-->
-        <property name="pattern" value="com.warframe.springaop.bean.impl.GreetingImpl.good.*"/>
-    </bean>
+    <!--&lt;!&ndash;配置一个切面&ndash;&gt;-->
+    <!--<bean id="greetingAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">-->
+        <!--&lt;!&ndash;advice&ndash;&gt;-->
+        <!--<property name="advice" ref="greetingAroundAdvice"/>-->
+        <!--&lt;!&ndash;pointcut&ndash;&gt;-->
+        <!--<property name="pattern" value="com.warframe.springaop.bean.impl.GreetingImpl.good.*"/>-->
+    <!--</bean>-->
 
-    <bean id="greetingProxy1" class="org.springframework.aop.framework.ProxyFactoryBean">
-        <property name="target" ref="greetingImpl"/>
-        <property name="proxyTargetClass" value="true"/>
-        <property name="interceptorNames" value="greetingAdvisor"/>
-    </bean>
+    <!--<bean id="greetingProxy1" class="org.springframework.aop.framework.ProxyFactoryBean">-->
+        <!--<property name="target" ref="greetingImpl"/>-->
+        <!--<property name="proxyTargetClass" value="true"/>-->
+        <!--<property name="interceptorNames" value="greetingAdvisor"/>-->
+    <!--</bean>-->
 
+    <!--总之SpringAOP配置很繁琐，容易调入配置切面的深渊-->
+
+    <!--使用Spring+AspectJ-->
+    <!--默认为false，默认只能代理接口(JDK代理)，当为true时，能代理目标类(CGLib)-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 </beans>
