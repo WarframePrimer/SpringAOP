@@ -1,11 +1,11 @@
 
-import com.warframe.springaop.bean.impl.GreetingImpl;
+import com.warframe.springaop.bean.Apology;
+import com.warframe.springaop.bean.Greeting;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 
 /**
  * @Author warframe[github.com/WarframePrimer]
@@ -14,25 +14,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = {"classpath:spring/spring-config.xml"})
 public class TestAOP {
-    @Test
-    public void testAOP1(){
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/spring-*.xml");
-
-        GreetingImpl greetingProxy = (GreetingImpl) applicationContext.getBean("greetingProxy1");
-        greetingProxy.sayHello("warframe");
-        greetingProxy.goodMorning("warframe");
-
-
-    }
+//    @Test
+//    public void testAOP1(){
+//        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/spring-*.xml");
+//
+//        GreetingImpl greetingProxy = (GreetingImpl) applicationContext.getBean("greetingProxy1");
+//        greetingProxy.sayHello("warframe");
+//        greetingProxy.goodMorning("warframe");
+//
+//
+//    }
 
 
     @Test
     public void testAspectJ(){
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/spring-*.xml");
 
-        GreetingImpl greeting = (GreetingImpl) applicationContext.getBean("greetingImpl");
+        Greeting greeting = (Greeting) applicationContext.getBean("greetingImpl");
         greeting.sayHello("warframe");
-        greeting.goodMorning("warframe");
+//        greeting.goodMorning("warframe");
+
+        Apology apology = (Apology)greeting;
+
+        apology.saySorry("warframe");
     }
 
 
